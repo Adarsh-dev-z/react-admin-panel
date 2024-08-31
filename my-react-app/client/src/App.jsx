@@ -1,20 +1,36 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import Header from './components/Header'
-import './App.css'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useState } from 'react';
+import Header from './components/Header';
+import UserTable from './components/UserTable';
+import RegisterPage from './components/RegisterPage';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
-  return(
+  return (
     <Router>
       <div className='AppContainer'>
-        <Header />
+        {/* Define Routes */}
+        <Routes>
+          {/* Route for the registration page */}
+          <Route path='/user-register' element={<RegisterPage />} />
+
+          {/* Route for the admin page */}
+          <Route path='/admin' element={
+            <div>
+              <Header />
+              <div className='BodyContainer'>
+                <UserTable />
+              </div>
+            </div>
+          } />
+          
+          {/* Redirect or handle other routes */}
+          <Route path='*' element={<div>Page Not Found</div>} />
+        </Routes>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
