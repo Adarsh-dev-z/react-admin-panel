@@ -1,31 +1,37 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { useState } from 'react';
-import Header from './components/Header';
-import UserTable from './components/UserTable';
-import RegisterPage from './components/RegisterPage';
+import { useEffect, useState } from 'react';
+import Header from './components/adminComponents/Header';
+import UserTable from './components/adminComponents/UserTable';
+import RegisterPage from './components/userComponents/RegisterPage';
+import LoginPage from './components/userComponents/LoginPage';
+import HomePage from './components/userComponents/HomePage';
 
 function App() {
-  const [count, setCount] = useState(0);
+const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(()=>{
+
+    const token = localStorage.getItem('token');
+    if(token){
+      setIsAuthenticated(true);
+    }
+  },[])
 
   return (
     <Router>
       <div className='AppContainer'>
-        {/* Define Routes */}
         <Routes>
-          {/* Route for the registration page */}
           <Route path='/user-register' element={<RegisterPage />} />
-
-          {/* Route for the admin page */}
+          <Route path='/user-login' element={<LoginPage/>} />
+          <Route path='/home' element={<HomePage/>} />
           <Route path='/admin' element={
-            <div>
+            <>
               <Header />
               <div className='BodyContainer'>
                 <UserTable />
               </div>
-            </div>
+            </>
           } />
-          
-          {/* Redirect or handle other routes */}
           <Route path='*' element={<div>Page Not Found</div>} />
         </Routes>
       </div>
