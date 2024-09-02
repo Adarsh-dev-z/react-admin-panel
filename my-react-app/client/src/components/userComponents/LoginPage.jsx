@@ -2,28 +2,31 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { Mail, Lock } from "lucide-react";
 import axios from "axios";
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom";
 
-const LoginPage = () => {
+const LoginPage = ({ setIsAuthenticated }) => {  // Accept setIsAuthenticated as a prop
   const { handleSubmit, register, formState: { errors } } = useForm();
-const navigate = useNavigate();
-  const onSubmit = async(data) => {
+  const navigate = useNavigate();
 
+  const onSubmit = async (data) => {
     console.log("Login data:", data);
-    try{
-
+    try {
       const response = await axios.post(
         'http://localhost:3000/api/user/login',
         data,
-        {withCredential: true}
+        { withCredentials: true }
       );
       console.log("Login successful:", response.data);
 
-    navigate('/home')
+      // Update the authentication state
+      setIsAuthenticated(true);
+      
+      // Navigate to home after successful login
+      navigate('/home');
 
-    }catch(err){
-      const errorMessage = err.response?.data?.message || 'An error occured during login';
-      console.error('Login error:', errorMessage)
+    } catch (err) {
+      const errorMessage = err.response?.data?.message || 'An error occurred during login';
+      console.error('Login error:', errorMessage);
     }
   };
 
@@ -32,7 +35,7 @@ const navigate = useNavigate();
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-4">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Login</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          
+
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
             <input

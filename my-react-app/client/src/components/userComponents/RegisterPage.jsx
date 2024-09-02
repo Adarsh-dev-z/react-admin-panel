@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { User, Mail, Lock, Key } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const RegisterPage = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('')
   const { handleSubmit, register, watch, formState: { errors } } = useForm();
-
+  const navigate = useNavigate();
   const password = watch('password');
 
   const onSubmit = async (data) => {
@@ -21,6 +22,7 @@ const RegisterPage = () => {
         }
       });
       console.log("Registration successful:", response.data);
+      navigate('/home')
     }
 
     catch(error){

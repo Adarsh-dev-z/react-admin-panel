@@ -33,9 +33,18 @@ module.exports = {
                 password: hashedPassword,
             };
 
-            await userHelper.createUser(userData);
+            const newUser = await userHelper.createUser(userData);
 
-            res.status(201).json({ message: "User registered successfully" });
+            const token = jwt.sign({id: newUser._id, email:newUser.email}, process.env.JWT_SECRET, {expiresIn: '1h'});
+
+            res.cookie('token', token, {
+                httpOnly: true,
+                secure:process.env.NODE_ENV === 'production',
+                sameSite: 'Strict',
+                maxAge: 60*60*1000
+            })
+
+            res.status(201).json({ message: "User registered successfully", token });
         } catch (err) {
             console.log('registration error', err);
             res.status(500).json({ message: "Server error" });
@@ -48,26 +57,26 @@ module.exports = {
             return res.status(400).json({errors: errors.array()})
         }
 
-        try{
+        try {
             const { email, password } = req.body;
             const user = await userHelper.findUserByEmail(email);
             if (!user) {
                 return res.status(400).json({ message: "User does not exist" });
             }
-
+    
             const isPasswordValid = await bcrypt.compare(password, user.password);
             if (!isPasswordValid) {
-                return res.status(400).json({message:'Invalid credentials'});
+                return res.status(400).json({ message: 'Invalid credentials' });
             }
-
-            const token = jwt.sign({id: user._id, email: user.email}, process.env.JWT_SECRET, {expiresIn: '1h'});
-
+    
+            const token = jwt.sign({ id: user._id, email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    
             res.cookie('token', token, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
                 sameSite: 'Strict',
-                maxAge: 60*60*1000
-            })
+                maxAge: 60 * 60 * 1000, // 1 hour
+            });
 
             res.status(200).json({message:'Login successful', token});
         }
@@ -75,5 +84,13 @@ module.exports = {
             console.log('login error', err)
             res.status(500).json({message:'server error'})
         }
+    },
+    userLogout: async(req, res) => {
+        res.clearCookie('token', {
+            httpOnly:true,
+            secure:process.env.NODE_ENV==='production',
+            sameSite:'Strict'
+        });
+        res.status(200).json({message: 'Logout successful'});
     }
 };
