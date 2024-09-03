@@ -86,11 +86,16 @@ module.exports = {
         }
     },
     userLogout: async(req, res) => {
-        res.clearCookie('token', {
-            httpOnly:true,
-            secure:process.env.NODE_ENV==='production',
-            sameSite:'Strict'
-        });
-        res.status(200).json({message: 'Logout successful'});
-    }
+        try {
+          res.clearCookie('token', {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict'
+          });
+          res.status(200).json({message: 'Logout successful'});
+        } catch (error) {
+          console.error('Logout error:', error);
+          res.status(500).json({message: 'Server error during logout'});
+        }
+      }
 };

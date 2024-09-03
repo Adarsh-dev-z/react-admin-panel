@@ -3,10 +3,33 @@ import { useForm } from "react-hook-form";
 import { Mail, Lock } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import usePreventBackNavigation from "../../customHooks/usePreventBackNavigation";
 
 const LoginPage = ({ setIsAuthenticated }) => {  // Accept setIsAuthenticated as a prop
   const { handleSubmit, register, formState: { errors } } = useForm();
   const navigate = useNavigate();
+
+  usePreventBackNavigation();
+
+ useEffect(()=>{
+
+  const authCheck = async () => {
+    try{
+      const response = await axios.get('http://localhost:3000/api/user/auth-status', {
+        withCredentials:true
+      })
+      if(response.status ===200){
+        navigate('/home', {replace:true})
+     
+      }
+    }catch(err){
+
+    }
+  }
+  authCheck()
+
+ },[navigate])
 
   const onSubmit = async (data) => {
     console.log("Login data:", data);
@@ -22,13 +45,16 @@ const LoginPage = ({ setIsAuthenticated }) => {  // Accept setIsAuthenticated as
       setIsAuthenticated(true);
       
       // Navigate to home after successful login
-      navigate('/home');
+      navigate('/home', {replace:true});
+
+
 
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'An error occurred during login';
       console.error('Login error:', errorMessage);
     }
   };
+  
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full bg-gray-100">
