@@ -6,11 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import usePreventBackNavigation from "../../customHooks/usePreventBackNavigation";
 
-const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUserAuthenticated as a prop
+const AdminLoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsAdminAuthenticated as a prop
   const { handleSubmit, register, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState("")
-
   usePreventBackNavigation();
 
 //  useEffect(()=>{
@@ -21,8 +20,7 @@ const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUse
 //         withCredentials:true
 //       })
 //       if(response.status ===200){
-//         console.log("respo:", response)
-//         navigate('/home', {replace:true})
+//         // navigate('/admin', {replace:true})
      
 //       }
 //     }catch(err){
@@ -37,21 +35,22 @@ const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUse
     console.log("Login data:", data);
     try {
       const response = await axios.post(
-        'http://localhost:3000/api/user/login',
+        'http://localhost:3000/api/admin/admin-login',
         data,
         { withCredentials: true }
       );
       console.log("Login successful:", response.data);
 
+      // Update the authentication state
       setIsAuthenticated(true);
-      setUserRole('user');
+      setUserRole('admin');
       
       // Navigate to home after successful login
-      navigate('/home', {replace:true});
+      navigate('/admin', {replace:true});
 
     } catch (err) {
       const errorMessage = err.response?.data?.message || 'An error occurred during login';
-      console.error('Login error:', errorMessage);
+      console.error('Admin Login error:', errorMessage);
       setLoginError(errorMessage);
     }
   };
@@ -60,7 +59,7 @@ const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUse
   return (
     <div className="flex items-center justify-center min-h-screen w-full bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-4">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Login</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Admin Login</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 
           <div className="relative">
@@ -85,7 +84,7 @@ const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUse
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
           </div>
 
-          {loginError&& <p className="text-red-500 text-sm">{loginError}</p>}
+          {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
 
           <button
             type="submit"
@@ -100,4 +99,4 @@ const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUse
   );
 };
 
-export default LoginPage;
+export default AdminLoginPage;

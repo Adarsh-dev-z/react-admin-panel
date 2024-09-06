@@ -1,6 +1,5 @@
 const { models } = require("mongoose");
 const userController = require("../controllers/userController");
-const { userAuthCheck } = require("../middleware/authCheck");
 const {validateUserRegistration} = require("../middleware/validateUser");
 const { checkAuthStatus } = require("../middleware/authMiddleware");
 const router = require("express").Router();
@@ -16,5 +15,6 @@ router.post('/login', userController.userLogin)
 router.get('/logout', userController.userLogout)
 
 router.get('/auth-status', checkAuthStatus)
+
 
 module.exports = router

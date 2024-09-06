@@ -17,7 +17,7 @@ const checkAuthStatus = async (req, res) => {
                 return res.status(401).json({ message: 'Invalid user' });
             }
             console.log('Middleware: Token verification successful');
-            res.status(200).json({ message: 'Authenticated', user: decoded });
+            res.status(200).json({ message: 'Authenticated', user: decoded, role:decoded.role });
         });
     } catch (err) {
         console.error('Middleware: Authentication check error', err);
@@ -25,4 +25,43 @@ const checkAuthStatus = async (req, res) => {
     }
 };
 
-module.exports = { checkAuthStatus };
+const adminAuthCheck = (req, res, next) =>{
+    const token = req.cookies.token;
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized, no token' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
+        if(decoded.role !== 'admin'){
+            return res.status(403).json({ message: 'Access denied, Admin only.' });
+        }
+
+        req.user = decoded;
+        next();
+    });
+}
+
+
+const userAuthChek = (req, res, next) =>{
+    const token = req.cookies.token;
+    if (!token) {
+        return res.status(401).json({ message: 'Unauthorized, no token' });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
+        if(decoded.role !== 'user'){
+            return res.status(403).json({ message: 'Access denied, User only.' });
+        }
+        req.user = decoded;
+        next();
+    });
+}
+
+
+module.exports = { checkAuthStatus, adminAuthCheck, userAuthChek };

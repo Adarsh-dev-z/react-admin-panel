@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 
-const Header = () => {
+const AdminHeader = () => {
     const [menuOpen, setMenuOpen] = useState(false);
 
     const searchUserHandler = () => {
@@ -98,4 +98,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default AdminHeader;

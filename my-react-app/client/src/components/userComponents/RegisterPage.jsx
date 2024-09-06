@@ -149,7 +149,7 @@ import usePreventCache from "../../customHooks/usePreventCache";
 
 
 
-const RegisterPage = ({ setIsAuthenticated }) => {
+const RegisterPage = ({ setIsAuthenticated, setUserRole }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const { handleSubmit, register, watch, formState: { errors } } = useForm();
@@ -172,6 +172,7 @@ const RegisterPage = ({ setIsAuthenticated }) => {
       });
       console.log("Registration successful:", response.data);
       setIsAuthenticated(true);
+      setUserRole('user'); 
       navigate('/home', { replace: true });
     } catch (error) {
       setError(error.response?.data?.message || 'An error occurred during registration');
