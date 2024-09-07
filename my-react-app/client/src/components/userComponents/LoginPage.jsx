@@ -13,25 +13,7 @@ const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUse
 
   usePreventBackNavigation();
 
-//  useEffect(()=>{
 
-//   const authCheck = async () => {
-//     try{
-//       const response = await axios.get('http://localhost:3000/api/user/auth-status', {
-//         withCredentials:true
-//       })
-//       if(response.status ===200){
-//         console.log("respo:", response)
-//         navigate('/home', {replace:true})
-     
-//       }
-//     }catch(err){
-
-//     }
-//   }
-//   authCheck()
-
-//  },[navigate])
 
   const onSubmit = async (data) => {
     console.log("Login data:", data);
@@ -68,7 +50,7 @@ const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUse
             <input
               type="email"
               placeholder="Email"
-              {...register('email', { required: 'Email is required' })}
+              {...register('email', { required: 'Email is required', validate: (value)=>value.trim()!=="" || "email cannot be empty" })}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -79,7 +61,7 @@ const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUse
             <input
               type="password"
               placeholder="Password"
-              {...register('password', { required: 'Password is required' })}
+              {...register('password', { required: 'Password is required', validate: (value)=>value.trim()!=="" || "Password cannot be empty" })}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
             />
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}

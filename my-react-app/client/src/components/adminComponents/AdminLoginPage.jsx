@@ -12,24 +12,6 @@ const AdminLoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept set
   const [loginError, setLoginError] = useState("")
   usePreventBackNavigation();
 
-//  useEffect(()=>{
-
-//   const authCheck = async () => {
-//     try{
-//       const response = await axios.get('http://localhost:3000/api/user/auth-status', {
-//         withCredentials:true
-//       })
-//       if(response.status ===200){
-//         // navigate('/admin', {replace:true})
-     
-//       }
-//     }catch(err){
-
-//     }
-//   }
-//   authCheck()
-
-//  },[navigate])
 
   const onSubmit = async (data) => {
     console.log("Login data:", data);

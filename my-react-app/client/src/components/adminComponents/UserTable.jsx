@@ -6,17 +6,36 @@ import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import EditUserModal from './EditUserModal';
 
-const UserTable = () => {
+const UserTable = ({newUser, searchTerm}) => {
 
     const [users, setUsers] = useState([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-
-    console.log("users", users)
+    const [filteredUser, setFilteredUser]= useState([]);
 
     useEffect(() => {
         fetchUser();
     }, []);
+
+    useEffect(()=>{
+      if(newUser){
+        setUsers(prevUsers=>[...prevUsers,newUser])
+      }
+    }, [newUser])
+
+    useEffect(()=>{
+      if(searchTerm){
+        const filtered = users.filter((user)=>
+        user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+        setFilteredUser(filtered)
+      }
+      else{
+        setFilteredUser(users)
+      }
+
+    },[searchTerm, users])
 
   const fetchUser = async() =>{
     try{
@@ -67,7 +86,7 @@ const UserTable = () => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user)=>(
+          {filteredUser.map((user)=>(
             <tr key={user._id}>
                 <td className='py-2 px-4 border-b'>{user.username}</td>
                 <td className='py-2 px-4 border-b'>{user.email}</td>

@@ -1,15 +1,33 @@
 import React, { useState } from 'react';
 import { FaSearch, FaBars, FaTimes } from 'react-icons/fa';
+import AddUserModal from './AddUserModal';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const AdminHeader = () => {
+
+const AdminHeader = ({onAddUser, onSearch}) => {
+
+    const [isAddModalOpen, setIsAddUserModalOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const navigate = useNavigate();
 
-    const searchUserHandler = () => {
-        console.log('Search user button clicked');
+    const handleSearchChange = (event) => {
+        setSearchTerm(event.target.value);
+    };
+
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
+        onSearch(searchTerm);
     };
 
     const addUserHandler = () => {
-        console.log('Add user button clicked');
+        setIsAddUserModalOpen(true);
+    };
+
+    const handleAddUser = (data) => {
+        onAddUser(data);
+        setIsAddUserModalOpen(false);
     };
 
     const LogoutHandler = () => {
@@ -28,15 +46,16 @@ const AdminHeader = () => {
                     <h2 className="text-xl font-extrabold text-gray-800">UM</h2>
                 </div>
                 <div className="flex items-center space-x-4">
-                    <div className="relative flex items-center">
+                    <form onSubmit={handleSearchSubmit} className="relative flex items-center">
                         <FaSearch className="absolute left-2 text-gray-500" />
                         <input
                             type="text"
                             placeholder="Search users..."
                             className="pl-8 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            onKeyPress={searchUserHandler}
+                            value={searchTerm}
+                            onChange={handleSearchChange}
                         />
-                    </div>
+                    </form>
                     {/* Menu Button for Small Screens */}
                     <div className="lg:hidden">
                         <button onClick={toggleMenu} className="text-gray-800 hover:text-blue-400 transition">
@@ -94,6 +113,9 @@ const AdminHeader = () => {
                     </div>
                 </div>
             )}
+
+            {isAddModalOpen&& <AddUserModal onClose={()=>setIsAddUserModalOpen(false)}
+                onAdd={handleAddUser}/>}
         </>
     );
 };

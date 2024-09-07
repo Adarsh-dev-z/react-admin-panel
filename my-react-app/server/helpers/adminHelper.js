@@ -41,5 +41,27 @@ module.exports = {
     }catch(err){
       throw new Error("Error deleting user: " + err.message);
     }
-  }
+  },
+
+  addUser: async (data) => {
+    try {
+      const user = await User.create(data);
+      return user;
+    } catch (err) {
+      throw new Error("Error adding user: " + err.message);
+    }
+  },
+
+  checkExistance: async (email) => {
+    try {
+      const existingUser = await User.findOne({ email });
+      if (!existingUser) {
+        return false;
+      }
+      return true;
+    } catch (err) {
+      console.error("Error checking user existence: ", err.message);
+      throw new Error("Error checking user existence");
+    }
+  },
 };

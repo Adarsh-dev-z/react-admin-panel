@@ -124,4 +124,23 @@ module.exports = {
         res.status(500).json({message: "server error occured while deleting the user"})
       }
     },
+
+    addUser: async(req, res)=>{
+      try{
+        const {username, email, phone, password, confirmPassword} = req.body;
+        console.log("username, email, phone, password, confirmPassword:", username, email, phone, password, confirmPassword);
+        const existingUser = await adminHelper.checkExistance(email); 
+        if (existingUser) {
+          return res.status(400).json({message: "User already exists"});
+        }
+        if(password!== confirmPassword){
+          return res.status(400).json({message: "Passwords do not match"})
+        }
+        const newUser = await adminHelper.addUser({username, email, phone, password, confirmPassword});
+        res.status(200).json({newUser});
+      }catch(err){
+        console.log("error adding the user:", err)
+        res.status(500).json({message: "server error occured while adding the user"})
+      }
+    },
 };
