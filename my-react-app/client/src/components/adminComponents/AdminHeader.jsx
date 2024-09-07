@@ -3,10 +3,12 @@ import { FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 import AddUserModal from './AddUserModal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { addUser } from '../../slices/userSlice';
+import { useDispatch } from 'react-redux';
 
+const AdminHeader = ({ onSearch}) => {
 
-const AdminHeader = ({onAddUser, onSearch}) => {
-
+    const dispatch = useDispatch();
     const [isAddModalOpen, setIsAddUserModalOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
@@ -26,7 +28,7 @@ const AdminHeader = ({onAddUser, onSearch}) => {
     };
 
     const handleAddUser = (data) => {
-        onAddUser(data);
+        dispatch(addUser(data));
         setIsAddUserModalOpen(false);
     };
 

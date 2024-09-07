@@ -5,26 +5,22 @@ import { useNavigate } from "react-router-dom";
 import axios from 'axios';
 import usePreventCache from "../../customHooks/usePreventCache";
 import usePreventBackNavigation from "../../customHooks/usePreventBackNavigation";
+import { useDispatch } from "react-redux";
+import { logout } from '../../slices/authSlice';
 
-const HomePage = ({ setIsAuthenticated }) => {
+
+
+const HomePage = () => {
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   usePreventCache();
   usePreventBackNavigation();
 
   const handleLogout = async () => {
-    try {
-      await axios.get('http://localhost:3000/api/user/logout', {
-        withCredentials: true
-      });
-      setIsAuthenticated(false);
-      navigate('/login', { replace: true });
-    } catch (err) {
-      console.error('Error during logout:', err.response?.data?.message || 'An error occurred during logout');
-      // Even if there's an error, we should still log out the user on the client side
-      setIsAuthenticated(false);
-      navigate('/login', { replace: true });
-    }
+    await dispatch(logout());
+    navigate('/login', {replace: true});
   };
 
   return (

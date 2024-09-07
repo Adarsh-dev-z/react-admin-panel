@@ -1,81 +1,76 @@
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Mail, Lock } from "lucide-react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import usePreventBackNavigation from "../../customHooks/usePreventBackNavigation";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../slices/authSlice";
 
-const LoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsUserAuthenticated as a prop
+const LoginPage = () => {
+  const dispatch = useDispatch();
+  const { error, isAuthenticated, userRole } = useSelector((state) => state.auth);
   const { handleSubmit, register, formState: { errors } } = useForm();
   const navigate = useNavigate();
-  const [loginError, setLoginError] = useState("")
 
   usePreventBackNavigation();
 
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate(userRole === 'admin' ? '/admin' : '/home', { replace: true });
+    }
+  }, [isAuthenticated, userRole, navigate]);
 
   const onSubmit = async (data) => {
-    console.log("Login data:", data);
-    try {
-      const response = await axios.post(
-        'http://localhost:3000/api/user/login',
-        data,
-        { withCredentials: true }
-      );
-      console.log("Login successful:", response.data);
-
-      setIsAuthenticated(true);
-      setUserRole('user');
-      
-      // Navigate to home after successful login
-      navigate('/home', {replace:true});
-
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || 'An error occurred during login';
-      console.error('Login error:', errorMessage);
-      setLoginError(errorMessage);
-    }
+    dispatch(login(data));
   };
-  
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md mx-4">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Login</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-
-          <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <input
-              type="email"
-              placeholder="Email"
-              {...register('email', { required: 'Email is required', validate: (value)=>value.trim()!=="" || "email cannot be empty" })}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-            />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-8">
+        <div>
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Login</h2>
+        </div>
+        <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
+          <div className="rounded-md shadow-sm -space-y-px">
+            <div className="relative">
+              <Mail className="absolute top-3 left-3 text-gray-400" />
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                {...register("email", { required: "Email is required" })}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pl-10"
+                placeholder="Email address"
+              />
+            </div>
+            <div className="relative">
+              <Lock className="absolute top-3 left-3 text-gray-400" />
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                {...register("password", { required: "Password is required" })}
+                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pl-10"
+                placeholder="Password"
+              />
+            </div>
           </div>
 
-          <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
-            <input
-              type="password"
-              placeholder="Password"
-              {...register('password', { required: 'Password is required', validate: (value)=>value.trim()!=="" || "Password cannot be empty" })}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-400"
-            />
-            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+          {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>}
+          {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>}
+          {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
+
+          <div>
+            <button
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Login
+            </button>
           </div>
-
-          {loginError&& <p className="text-red-500 text-sm">{loginError}</p>}
-
-          <button
-            type="submit"
-            className="w-full bg-gray-600 text-white py-2 rounded-md hover:bg-gray-500 transition duration-300 ease-in-out"
-          >
-            Login
-          </button>
-
         </form>
       </div>
     </div>

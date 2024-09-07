@@ -5,23 +5,28 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import EditUserModal from './EditUserModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers, updateUser, deleteUser } from '../../slices/userSlice';
 
-const UserTable = ({newUser, searchTerm}) => {
+const UserTable = ({searchTerm}) => {
 
-    const [users, setUsers] = useState([]);
+  const dispatch = useDispatch();
+  const { users, loading, error} = useSelector((state)=> state.user);
+
+    // const [users, setUsers] = useState([]);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [filteredUser, setFilteredUser]= useState([]);
 
     useEffect(() => {
-        fetchUser();
-    }, []);
+        dispatch(fetchUsers());
+    }, [dispatch]);
 
-    useEffect(()=>{
-      if(newUser){
-        setUsers(prevUsers=>[...prevUsers,newUser])
-      }
-    }, [newUser])
+    // useEffect(()=>{
+    //   if(newUser){
+    //     setUsers(prevUsers=>[...prevUsers,newUser])
+    //   }
+    // }, [newUser])
 
     useEffect(()=>{
       if(searchTerm){
@@ -37,14 +42,14 @@ const UserTable = ({newUser, searchTerm}) => {
 
     },[searchTerm, users])
 
-  const fetchUser = async() =>{
-    try{
-        const response = await axios.get('http://localhost:3000/api/admin/users', {withCredentials:true});
-        setUsers(response.data.users);
-    }catch(err){
-        console.log('Error fetching users',err);
-    }
-  }
+  // const fetchUser = async() =>{
+  //   try{
+  //       const response = await axios.get('http://localhost:3000/api/admin/users', {withCredentials:true});
+  //       setUsers(response.data.users);
+  //   }catch(err){
+  //       console.log('Error fetching users',err);
+  //   }
+  // }
 
   const handleEdit = (user) => {
     setSelectedUser(user);
@@ -52,24 +57,13 @@ const UserTable = ({newUser, searchTerm}) => {
   };
 
   const handleUpdateUser = async(updatedUser)=>{
-    try{
-        const response = await axios.put(`http://localhost:3000/api/admin/users/${updatedUser._id}`, updatedUser, {withCredentials:true});
-        setIsEditModalOpen(false);
-        fetchUser();
-    }catch(err){
-        console.log('Error updating user',err);
-    }
+    dispatch(updateUser(updatedUser));
+    setIsEditModalOpen(false);
   }
 
   const handleDelete = async(userId)=>{
     if(window.confirm('Are you sure you want to delete this user?')){
-
-        try{
-            const response = await axios.delete(`http://localhost:3000/api/admin/users/${userId}`, {withCredentials:true});
-            fetchUser();
-        }catch(err){
-            console.log('Error deleting user',err);
-        }
+       dispatch(deleteUser(userId));
     }
   }
 
