@@ -26,6 +26,7 @@ router.get('/users', adminAuthCheck, adminController.getUsers);
 router.put('/users/:id', adminAuthCheck, adminController.updateUser);
 router.delete('/users/:id', adminAuthCheck, adminController.deleteUser);
 router.post('/add-user', adminAuthCheck, adminController.addUser);
+router.get('/admin-logout', adminController.adminLogout)
 
 
 

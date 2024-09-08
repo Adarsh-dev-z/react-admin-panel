@@ -84,12 +84,27 @@ module.exports = {
         maxAge: 60 * 60 * 1000,
       });
 
-      res.status(200).json({ message: "Admin login successful", token });
+      res.status(200).json({ message: "Admin login successful", token, role:admin.role });
     } catch (err) {
       console.error("Login error:", err);
       res.status(500).json({ message: "Server error" });
     }
   },
+
+  adminLogout: async(req, res)=>{
+    try{
+      res.clearCookie('token',{
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'Strict'
+      });
+      res.status(200).json('Admin Logout Succesful')
+  }
+  catch(err){
+    console.log(err)
+    res.status(500).json({message:'server error occured while admin logout'})
+  }
+},
 
   getUsers:async(req, res)=>{
     try{

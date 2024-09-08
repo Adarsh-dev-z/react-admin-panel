@@ -4,15 +4,18 @@ import AddUserModal from './AddUserModal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { addUser } from '../../slices/userSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { adminLogout } from '../../slices/authSlice';
+
 
 const AdminHeader = ({ onSearch}) => {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const { error, isAuthenticated, userRole } = useSelector((state) => state.auth);
     const [isAddModalOpen, setIsAddUserModalOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const navigate = useNavigate();
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -32,8 +35,9 @@ const AdminHeader = ({ onSearch}) => {
         setIsAddUserModalOpen(false);
     };
 
-    const LogoutHandler = () => {
-        console.log('Logout button clicked');
+    const LogoutHandler = async () => {
+        await dispatch(adminLogout());
+        navigate('/admin-login');
     };
 
     const toggleMenu = () => {

@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-
+import { updateUser } from '../../slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const EditUserModal = ({ user, onClose, onUpdate }) => {
+  const dispatch = useDispatch();
+  const {error} = useSelector((state) => state.user);
 
   const {register, watch, formState: { errors }} = useForm();
   
@@ -14,10 +17,21 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
     setEditedUser({ ...editedUser,[name]:value});
   };
 
-  const handleSubmit = (event)=>{
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    onUpdate(editedUser);
-  }
+  
+    console.log('Before dispatching updateUser:', editedUser);
+  
+    try {
+      onUpdate(editedUser);
+      await dispatch(updateUser(editedUser));
+      console.log('After dispatching updateUser:', editedUser);
+      onClose();
+    } catch (error) {
+      console.error('Error updating user:', error);
+      // Handle error if needed
+    }
+  };
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">

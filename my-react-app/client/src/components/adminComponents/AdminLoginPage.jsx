@@ -4,39 +4,31 @@ import { Mail, Lock } from "lucide-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { adminLogin } from "../../slices/authSlice";
 import usePreventBackNavigation from "../../customHooks/usePreventBackNavigation";
 
-const AdminLoginPage = ({ setIsAuthenticated, setUserRole }) => {  // Accept setIsAdminAuthenticated as a prop
+
+
+const AdminLoginPage = () => {  
   const { handleSubmit, register, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { error, isAuthenticated, userRole } = useSelector((state)=> state.auth);
+  console.log('err:', error, 'is auth:', isAuthenticated, 'user role:', userRole)
   const [loginError, setLoginError] = useState("")
   usePreventBackNavigation();
 
 
-  const onSubmit = async (data) => {
-    console.log("Login data:", data);
-    try {
-      const response = await axios.post(
-        'http://localhost:3000/api/admin/admin-login',
-        data,
-        { withCredentials: true }
-      );
-      console.log("Login successful:", response.data);
-
-      // Update the authentication state
-      setIsAuthenticated(true);
-      setUserRole('admin');
-      
-      // Navigate to home after successful login
-      navigate('/admin', {replace:true});
-
-    } catch (err) {
-      const errorMessage = err.response?.data?.message || 'An error occurred during login';
-      console.error('Admin Login error:', errorMessage);
-      setLoginError(errorMessage);
-    }
-  };
+ const onSubmit = async(data)=>{
+  try{
+    await dispatch(adminLogin(data)).unwrap();
+    navigate('/admin',{replace:true});
+  }catch(err){
+    console.error('admin login error', err);
+ }
   
+}
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full bg-gray-100">

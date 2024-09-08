@@ -83,12 +83,35 @@ const userSlice = createSlice({
                 state.users.push(action.payload);
             })
 
-            .addCase(updateUser.fulfilled, (state, action)=>{
-                const index = state.users.findIndex(user => user._id === action.payload._id);
-                if(index !==-1){
-                    state.users[index]= action.payload;
+            // .addCase(updateUser.pending, (state) => {
+            //     state.loading = true;
+            //     state.error = null;
+            //   })
+              .addCase(updateUser.fulfilled, (state, action) => {
+                state.loading = false;
+                const updatedUser = action.payload;
+                const index = state.users.findIndex(user => user._id === updatedUser._id);
+                if (index !== -1) {
+                  state.users = [
+                    ...state.users.slice(0, index),
+                    updatedUser,
+                    ...state.users.slice(index + 1)
+                  ];
                 }
-            })
+                console.log('State after update:', action.payload);
+              })
+            //   .addCase(updateUser.rejected, (state, action) => {
+            //     state.loading = false;
+            //     state.error = action.payload ? action.payload.message : 'Failed to update user';
+            //   })
+
+            // .addCase(updateUser.fulfilled, (state, action)=>{
+            //     const index = state.users.findIndex(user => user._id === action.payload._id);
+            //     if(index !==-1){
+            //         console.log("action payload:",action.payload)
+            //         state.users[index]= action.payload;
+            //     }
+            // })
 
             .addCase(deleteUser.fulfilled, (state, action)=>{
                 state.users = state.users.filter(user => user._id !==action.payload);

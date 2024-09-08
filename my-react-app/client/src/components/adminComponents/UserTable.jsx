@@ -1,69 +1,71 @@
 
 
 
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { FaEdit, FaTrash } from 'react-icons/fa';
-import EditUserModal from './EditUserModal';
+
+import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers, updateUser, deleteUser } from '../../slices/userSlice';
+import EditUserModal from './EditUserModal';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
-const UserTable = ({searchTerm}) => {
-
+const UserTable = ({ searchTerm }) => {
   const dispatch = useDispatch();
-  const { users, loading, error} = useSelector((state)=> state.user);
+  const { users, loading, error } = useSelector((state) => state.user);
+  const [filteredUsers, setFilteredUsers] = useState([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  // const [updateTrigger, setUpdateTrigger] = useState(0);
 
-    // const [users, setUsers] = useState([]);
-    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [filteredUser, setFilteredUser]= useState([]);
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
-    useEffect(() => {
-        dispatch(fetchUsers());
-    }, [dispatch]);
-
-    // useEffect(()=>{
-    //   if(newUser){
-    //     setUsers(prevUsers=>[...prevUsers,newUser])
-    //   }
-    // }, [newUser])
-
-    useEffect(()=>{
-      if(searchTerm){
-        const filtered = users.filter((user)=>
+  const filterUsers = useCallback(() => {
+    if (searchTerm) {
+      return users.filter((user) =>
         user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
         user.email.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        setFilteredUser(filtered)
-      }
-      else{
-        setFilteredUser(users)
-      }
+      );
+    }
+    return users;
+  }, [users, searchTerm]);
 
-    },[searchTerm, users])
+  useEffect(() => {
+    setFilteredUsers(filterUsers());
+  }, [filterUsers, users]);
 
-  // const fetchUser = async() =>{
-  //   try{
-  //       const response = await axios.get('http://localhost:3000/api/admin/users', {withCredentials:true});
-  //       setUsers(response.data.users);
-  //   }catch(err){
-  //       console.log('Error fetching users',err);
-  //   }
-  // }
+  useEffect(() => {
+    console.log('Users updated:', users);
+  }, [users]);
 
   const handleEdit = (user) => {
     setSelectedUser(user);
     setIsEditModalOpen(true);
   };
 
-  const handleUpdateUser = async(updatedUser)=>{
-    dispatch(updateUser(updatedUser));
-    setIsEditModalOpen(false);
-  }
+  const handleUpdateUser = async (updatedUser) => {
+    console.log("Before update:", users);
+    try {
+      const resultAction = await dispatch(updateUser(updatedUser));
+      if (updateUser.fulfilled.match(resultAction)) {
+        console.log("Update successful");
+        setIsEditModalOpen(false);
+        // setUpdateTrigger(prev => prev + 1); 
+        dispatch(fetchUsers());
+      } else {
+        console.error('Failed to update user:', resultAction.error);
+      }
+    } catch (err) {
+      console.error('Error updating user:', err);
+    }
+    console.log("After update:", users);
+  };
 
   const handleDelete = async(userId)=>{
-    if(window.confirm('Are you sure you want to delete this user?')){
-       dispatch(deleteUser(userId));
+    try{
+      dispatch(deleteUser(userId));
+    }catch(err){
+      console.error('Error deleting user:', err);
     }
   }
 
@@ -80,7 +82,7 @@ const UserTable = ({searchTerm}) => {
           </tr>
         </thead>
         <tbody>
-          {filteredUser.map((user)=>(
+          {filteredUsers.map((user)=>(
             <tr key={user._id}>
                 <td className='py-2 px-4 border-b'>{user.username}</td>
                 <td className='py-2 px-4 border-b'>{user.email}</td>

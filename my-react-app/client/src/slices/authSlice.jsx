@@ -24,6 +24,41 @@ export const logout = createAsyncThunk(
   }
 );
 
+export const register = createAsyncThunk(
+  'auth/register',
+  async(credentials, { rejectWithValue }) => {
+    try{
+      const response = await axios.post('http://localhost:3000/api/user/register', credentials, { withCredentials: true });
+      return response.data;
+    }catch(err){
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const adminLogin = createAsyncThunk(
+  'auth/admin-login',
+  async(credentials, { rejectWithValue }) => {
+    try{
+      const response = await axios.post('http://localhost:3000/api/admin/admin-login', credentials, { withCredentials: true });
+      return response.data;
+    }catch(err){
+      return rejectWithValue(err.response.data);
+    }
+  }
+)
+
+export const adminLogout = createAsyncThunk(
+  'auth/admin-logout',
+  async(_, {rejectWithValue}) =>{
+    try{
+      await axios.get('http://localhost:3000/api/admin/admin-logout', { withCredentials: true });
+    }catch(err){
+      return rejectWithValue(err.response.data);
+    }
+  }
+)
+
 export const checkAuthStatus = createAsyncThunk(
   'auth/checkStatus',
   async (_, { rejectWithValue }) => {
@@ -63,6 +98,33 @@ const authSlice = createSlice({
         state.userRole = null;
         state.error = null;
       })
+      .addCase(register.fulfilled, (state, action) => {
+        state.isAuthenticated = true;
+        state.userRole = action.payload.userRole;
+        state.error = null;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.isAuthenticated = false;
+        state.userRole = null;
+        state.error = action.payload.message;
+      })
+      .addCase(adminLogin.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.isAuthenticated = true;
+        state.userRole = action.payload.role;
+        state.error = null;
+      })
+      .addCase(adminLogin.rejected, (state, action) => {
+        state.isAuthenticated = false;
+        state.userRole = null;
+        state.error = action.payload.message;
+      })
+      .addCase(adminLogout.fulfilled, (state)=>{
+        state.isAuthenticated = false;
+        state.userRole = null;
+        state.error = null;
+      })
+      
       .addCase(checkAuthStatus.pending, (state) => {
         state.loading = true;
       })
