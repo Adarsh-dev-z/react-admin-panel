@@ -19,8 +19,8 @@ const HomePage = () => {
   usePreventBackNavigation();
 
   const handleLogout = async () => {
-    await dispatch(logout());
-    navigate('/login', {replace: true});
+    dispatch(logout());
+    navigate('/login', { replace: true });
   };
 
   return (

@@ -78,7 +78,7 @@ module.exports = {
                 maxAge: 60 * 60 * 1000, // 1 hour
             });
 
-            res.status(200).json({message:'Login successful', token});
+            res.status(200).json({message:'Login successful', token, role: user.role});
         }
         catch(err){
             console.log('login error', err)
