@@ -8,10 +8,10 @@ import { fetchUsers, updateUser, deleteUser } from '../../slices/userSlice';
 import EditUserModal from './EditUserModal';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 
-const UserTable = ({ searchTerm }) => {
+const UserTable = () => {
   const dispatch = useDispatch();
-  const { users, loading, error } = useSelector((state) => state.user);
-  const [filteredUsers, setFilteredUsers] = useState([]);
+  const { users, loading, error, searchTerm, filteredUsers } = useSelector((state) => state.user);
+  console.log("filtered users:", filteredUsers)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   // const [updateTrigger, setUpdateTrigger] = useState(0);
@@ -20,23 +20,23 @@ const UserTable = ({ searchTerm }) => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  const filterUsers = useCallback(() => {
-    if (searchTerm) {
-      return users.filter((user) =>
-        user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        user.email.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    }
-    return users;
-  }, [users, searchTerm]);
+  // const filterUsers = useCallback(() => {
+  //   if (searchTerm) {
+  //     return users.filter((user) =>
+  //       user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  //       user.email.toLowerCase().includes(searchTerm.toLowerCase())
+  //     );
+  //   }
+  //   return users;
+  // }, [users, searchTerm]);
 
-  useEffect(() => {
-    setFilteredUsers(filterUsers());
-  }, [filterUsers, users]);
+  // useEffect(() => {
+  //   setFilteredUsers(filterUsers());
+  // }, [filterUsers, users]);
 
-  useEffect(() => {
-    console.log('Users updated:', users);
-  }, [users]);
+  // useEffect(() => {
+  //   console.log('Users updated:', users);
+  // }, [users]);
 
   const handleEdit = (user) => {
     setSelectedUser(user);

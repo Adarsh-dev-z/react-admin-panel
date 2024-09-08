@@ -3,27 +3,27 @@ import { FaSearch, FaBars, FaTimes } from 'react-icons/fa';
 import AddUserModal from './AddUserModal';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { addUser } from '../../slices/userSlice';
+import { addUser, setSearchTerm } from '../../slices/userSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { adminLogout } from '../../slices/authSlice';
 
 
-const AdminHeader = ({ onSearch}) => {
+const AdminHeader = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { error, isAuthenticated, userRole } = useSelector((state) => state.auth);
+    const { error, isAuthenticated, userRole, searchTerm } = useSelector((state) => state.auth);
     const [isAddModalOpen, setIsAddUserModalOpen] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
+    // const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearchChange = (event) => {
-        setSearchTerm(event.target.value);
+        dispatch(setSearchTerm(event.target.value))
     };
 
     const handleSearchSubmit = (event) => {
         event.preventDefault();
-        onSearch(searchTerm);
+        
     };
 
     const addUserHandler = () => {
