@@ -1,17 +1,11 @@
-
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios';
-import usePreventCache from "../../customHooks/usePreventCache";
-import usePreventBackNavigation from "../../customHooks/usePreventBackNavigation";
 import { useDispatch } from "react-redux";
 import { logout } from '../../slices/authSlice';
-
-
+import usePreventCache from "../../customHooks/usePreventCache";
+import usePreventBackNavigation from "../../customHooks/usePreventBackNavigation";
 
 const HomePage = () => {
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -19,8 +13,17 @@ const HomePage = () => {
   usePreventBackNavigation();
 
   const handleLogout = async () => {
-    dispatch(logout());
-    navigate('/login', { replace: true });
+    try {
+      // Unwrap the result to handle success or failure explicitly
+      await dispatch(logout()).unwrap();
+
+      // If the above line did not throw an error, consider logout successful
+      navigate('/login', { replace: true });
+    } catch (error) {
+      // Handle the case where an error occurred
+      console.error("An error occurred during logout:", error.message || error);
+      alert("An error occurred during logout. Please try again.");
+    }
   };
 
   return (

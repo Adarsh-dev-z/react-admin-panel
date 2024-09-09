@@ -1,13 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { addUser, fetchUsers } from '../../slices/userSlice';
+import { useDispatch } from 'react-redux';
 
-const AddUserModal = ({ onClose, onAdd }) => {
+const AddUserModal = ({ onClose }) => {
   
+  const dispatch = useDispatch();
   const {register, watch, handleSubmit, formState: {errors}} = useForm();
   const password = watch('password')
   
-  const onSubmit = (data) => {
-    onAdd(data);
+
+  const onSubmit = async (data) => {
+    console.log(data,"data")
+    await dispatch(addUser(data));
+    await dispatch(fetchUsers());
+
+    onClose()
   }
 
 

@@ -17,7 +17,7 @@ export const logout = createAsyncThunk(
   'auth/logout',
   async (_, { rejectWithValue }) => {
     try {
-      await axios.get('http://localhost:3000/api/user/logout', {}, { withCredentials: true });
+      await axios.get('http://localhost:3000/api/user/logout', { withCredentials: true });
     } catch (err) {
       return rejectWithValue(err.response.data);
     }
@@ -94,6 +94,7 @@ const authSlice = createSlice({
         state.error = action.payload.message;
       })
       .addCase(logout.fulfilled, (state) => {
+        console.log(state)
         state.isAuthenticated = false;
         state.userRole = null;
         state.error = null;

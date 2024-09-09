@@ -9,15 +9,15 @@ const AdminBody = () => {
     const [newUser, setNewUser] = useState(null);
     const [searchTerm, setSearchTerm] = useState("");
 console.log('new user:', newUser, 'search term:', searchTerm);
-    const handleAddUser = async (userData) => {
-        try {
-            const response = await axios.post('http://localhost:3000/api/admin/add-user', userData, { withCredentials: true });
-            console.log('User added successfully:', response);
-            setNewUser(response.data.newUser);
-        } catch (err) {
-            console.log('error adding user:', err);
-        }
-    }
+    // const handleAddUser = async (userData) => {
+    //     try {
+    //         const response = await axios.post('http://localhost:3000/api/admin/add-user', userData, { withCredentials: true });
+    //         console.log('User added successfully:', response);
+    //         setNewUser(response.data.newUser);
+    //     } catch (err) {
+    //         console.log('error adding user:', err);
+    //     }
+    // }
 
     const handleSearch = (term)=>{
         setSearchTerm(term);
@@ -27,7 +27,7 @@ console.log('new user:', newUser, 'search term:', searchTerm);
     return (
         
     <>
-        <AdminHeader onAddUser={handleAddUser} onSearch={handleSearch} />
+        <AdminHeader onSearch={handleSearch} />
         <UserTable newUser={newUser} searchTerm={searchTerm} />
     </>
 
