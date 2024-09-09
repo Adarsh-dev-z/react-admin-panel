@@ -44,7 +44,7 @@ module.exports = {
                 maxAge: 60*60*1000
             })
 
-            res.status(201).json({ message: "User registered successfully", token });
+            res.status(201).json({ message: "User registered successfully", token, role:newUser.role });
         } catch (err) {
             console.log('registration error', err);
             res.status(500).json({ message: "Server error" });
