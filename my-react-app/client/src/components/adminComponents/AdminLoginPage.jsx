@@ -17,7 +17,6 @@ const AdminLoginPage = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { error, isAuthenticated, userRole } = useSelector((state) => state.auth);
-    const [loginError, setLoginError] = useState("");
     usePreventBackNavigation();
 
     const onSubmit = async (data) => {
@@ -56,7 +55,7 @@ const AdminLoginPage = () => {
                         {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
                     </div>
 
-                    {loginError && <p className="text-red-500 text-sm">{loginError}</p>}
+                    {error && <p className="text-red-500 text-sm">{error}</p>}
 
                     <button type="submit" className="w-full bg-gray-600 text-white py-2 rounded-md hover:bg-gray-500 transition duration-300 ease-in-out">
                         Login

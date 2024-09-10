@@ -13,7 +13,7 @@ const checkAuthStatus = async (req, res) => {
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
                 console.log('Middleware: Error during token verification', err);
-                res.clearCookie('token'); // Clear the cookie if the token is invalid
+                res.clearCookie('token'); 
                 return res.status(401).json({ message: 'Invalid user' });
             }
             console.log('Middleware: Token verification successful');

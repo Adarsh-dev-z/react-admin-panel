@@ -21,7 +21,6 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (isAuthenticated) {
-            console.log("isAuthenticated,userRole", isAuthenticated, userRole);
             navigate(userRole === "admin" ? "/admin" : "/home", { replace: true });
         }
     }, [isAuthenticated]);

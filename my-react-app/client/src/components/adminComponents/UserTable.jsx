@@ -6,12 +6,10 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 
 const UserTable = () => {
     const dispatch = useDispatch();
-    const { users, filteredUsers, searchTerm, loading, error } = useSelector((state) => state.user);
-
+    const { users, filteredUsers, error } = useSelector((state) => state.user);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
-    console.log("check render");
     useEffect(() => {
         dispatch(fetchUsers());
     }, [dispatch]);
@@ -25,8 +23,8 @@ const UserTable = () => {
         try {
             const resultAction = await dispatch(updateUser(updatedUser));
             if (updateUser.fulfilled.match(resultAction)) {
-                const updatedUsers = users.map((user) => (user._id === updatedUser._id ? updatedUser : user));
 
+                const updatedUsers = users.map((user) => (user._id === updatedUser._id ? updatedUser : user));
                 const updatedFilteredUsers = filteredUsers.map((user) => (user._id === updatedUser._id ? updatedUser : user));
 
                 dispatch({ type: "user/setUsers", payload: updatedUsers });
@@ -34,7 +32,7 @@ const UserTable = () => {
 
                 setIsEditModalOpen(false);
             } else {
-                console.error("Failed to update user:", resultAction.error);
+                console.log("Error updating user:", resultAction.payload);
             }
         } catch (err) {
             console.error("Error updating user:", err);
@@ -43,7 +41,7 @@ const UserTable = () => {
 
     const handleDelete = async (userId) => {
         try {
-            await dispatch(deleteUser(userId));
+             await dispatch(deleteUser(userId));
         } catch (err) {
             console.error("Error deleting user:", err);
         }
@@ -81,8 +79,12 @@ const UserTable = () => {
                 </tbody>
             </table>
 
+             {error && <p className="text-red-500">{error}</p>}   
+
             {isEditModalOpen && <EditUserModal user={selectedUser} onClose={() => setIsEditModalOpen(false)} onUpdate={handleUpdateUser} />}
+    
         </div>
+
     );
 };
 

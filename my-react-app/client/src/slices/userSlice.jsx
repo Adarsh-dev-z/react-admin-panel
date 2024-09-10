@@ -78,7 +78,7 @@ const userSlice = createSlice({
                 state.users = action.payload;
                 state.filteredUsers = action.payload;
                 state.loading = false;
-                state.error = null;
+                // state.error = null;
             })
             .addCase(fetchUsers.rejected, (state, action) => {
                 state.loading = false;
@@ -86,6 +86,9 @@ const userSlice = createSlice({
             })
             .addCase(addUser.fulfilled, (state, action) => {
                 state.users.push(action.payload);
+            })
+            .addCase(addUser.rejected, (state, action) => {
+                state.error = action.payload ? action.payload.message : ["Failed to add user"]; 
             })
             .addCase(updateUser.pending, (state) => {
                 state.loading = true;
@@ -107,12 +110,16 @@ const userSlice = createSlice({
             })
             .addCase(updateUser.rejected, (state, action) => {
                 state.loading = false;
-                state.error = action.payload ? action.payload.message : "Failed to update user";
+                state.error = action.payload ? action.payload.message : ["Failed to update user"];
             })
             .addCase(deleteUser.fulfilled, (state, action) => {
                 state.users = state.users.filter((user) => user._id !== action.payload);
                 state.filteredUsers = state.filteredUsers.filter((user) => user._id !== action.payload);
-            });
+                state.error = null;
+            })
+            .addCase(deleteUser.rejected, (state, action) => {
+                state.error = action.payload ? action.payload.message : ["Failed to delete user"];
+            })
     },
 });
 

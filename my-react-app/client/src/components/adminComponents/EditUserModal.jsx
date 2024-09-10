@@ -1,19 +1,17 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { updateUser } from "../../slices/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 const EditUserModal = ({ user, onClose, onUpdate }) => {
-    const dispatch = useDispatch();
     const { error } = useSelector((state) => state.user);
 
     const {
         register,
-        watch,
         formState: { errors },
     } = useForm();
 
     const [editedUser, setEditedUser] = useState(user);
+
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -23,12 +21,9 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        console.log("Before dispatching updateUser:", editedUser);
 
         try {
             onUpdate(editedUser);
-            await dispatch(updateUser(editedUser));
-            console.log("After dispatching updateUser:", editedUser);
             onClose();
         } catch (error) {
             console.error("Error updating user:", error);
@@ -52,6 +47,7 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
                             onChange={handleInputChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                        {errors.username && <p className="text-red-500">{errors.username.message}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
@@ -65,19 +61,21 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
                             onChange={handleInputChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
                             Phone
                         </label>
                         <input
-                            type="text"
+                            type="number"
                             name="phone"
                             value={editedUser.phone}
                             {...register("phone", { required: "phone is required", validate: (value) => value.trim() !== "" || `phone cannot be empty` })}
                             onChange={handleInputChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                        {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
                     </div>
                     <div className="flex items-center justify-between">
                         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
@@ -86,6 +84,7 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
                         <button type="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             Cancel
                         </button>
+
                     </div>
                 </form>
             </div>

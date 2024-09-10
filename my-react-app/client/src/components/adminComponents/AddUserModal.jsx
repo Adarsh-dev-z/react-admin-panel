@@ -14,10 +14,8 @@ const AddUserModal = ({ onClose }) => {
     const password = watch("password");
 
     const onSubmit = async (data) => {
-        console.log(data, "data");
         await dispatch(addUser(data));
         await dispatch(fetchUsers());
-
         onClose();
     };
 
@@ -36,6 +34,7 @@ const AddUserModal = ({ onClose }) => {
                             {...register("username", { required: "username is required", validate: (value) => value.trim() !== "" || `username cannot be empty` })}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                        {errors.username && <p className="text-red-500">{errors.username.message}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
@@ -47,6 +46,7 @@ const AddUserModal = ({ onClose }) => {
                             {...register("email", { required: "email is required", validate: (value) => value.trim() !== "" || `email cannot be empty` })}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                        {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
@@ -58,6 +58,7 @@ const AddUserModal = ({ onClose }) => {
                             {...register("phone", { required: "phone is required", validate: (value) => value.trim() !== "" || `phone cannot be empty` })}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                        {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
                     </div>
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
@@ -69,6 +70,7 @@ const AddUserModal = ({ onClose }) => {
                             {...register("password", { required: "password is required", validate: (value) => value.trim() !== "" || `password cannot be empty` })}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                        {errors.password && <p className="text-red-500">{errors.password.message}</p>}
                     </div>
 
                     <div className="mb-4">
@@ -83,6 +85,7 @@ const AddUserModal = ({ onClose }) => {
                             })}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
+                        {errors.confirmPassword && <p className="text-red-500">{errors.confirmPassword.message}</p>}
                     </div>
                     <div className="flex items-center justify-between">
                         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

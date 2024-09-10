@@ -19,12 +19,11 @@ const corsOptions = {
 app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); // Your frontend URL
-    res.header('Access-Control-Allow-Credentials', 'true'); // Allow credentials
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173'); 
+    res.header('Access-Control-Allow-Credentials', 'true'); 
     next();
 });
 
-// Middleware to set no-cache headers
 app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate');
     res.set('Pragma', 'no-cache');

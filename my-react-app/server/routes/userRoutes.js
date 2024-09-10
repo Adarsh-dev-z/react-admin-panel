@@ -12,5 +12,4 @@ router.post('/login', userController.userLogin)
 router.get('/logout', userController.userLogout)
 router.get('/auth-status', checkAuthStatus)
 
-
 module.exports = router
