@@ -73,7 +73,7 @@ const authSlice = createSlice({
             .addCase(login.rejected, (state, action) => {
                 state.isAuthenticated = false;
                 state.userRole = null;
-                state.error = action.payload.message;
+                state.error = action.payload.message || 'Something went wrong';
             })
             .addCase(logout.fulfilled, (state) => {
                 console.log(state);

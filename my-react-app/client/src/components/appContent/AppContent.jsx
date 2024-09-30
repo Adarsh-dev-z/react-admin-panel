@@ -7,7 +7,6 @@ import AppRoutes from "../../routes/AppRoutes";
 function AppContent() {
     const dispatch = useDispatch();
     const { loading } = useSelector((state) => state.auth);
-
     useEffect(() => {
         dispatch(checkAuthStatus());
     }, [dispatch]);
@@ -15,7 +14,6 @@ function AppContent() {
     if (loading) {
         return <div>Loading...</div>;
     }
-
     return <AppRoutes />;
 }
 

@@ -64,4 +64,15 @@ module.exports = {
             throw new Error("Error checking user existence");
         }
     },
+
+    addNewProduct: async(data)=>{
+        try{
+            const newProduct = await Product.create(data);
+            return newProduct
+        }
+        catch(err){
+            console.error("error happaned while adding product", err);
+            throw new Error("error occured while adding new product")
+        }
+    }
 };

@@ -118,4 +118,11 @@ module.exports = {
             res.status(500).json({ message: "server error occured while adding the user" });
         }
     },
+
+    addProduct: async(req, res) =>{
+        const { productName, price, stock } = req.body;
+
+        const newProduct = await adminHelper.addNewProduct({productName, price, stock})
+
+    }
 };
