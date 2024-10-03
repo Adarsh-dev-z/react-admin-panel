@@ -19,7 +19,7 @@ module.exports = {
     },
     getAllUsers: async () => {
         try {
-            const users = await User.find();
+            const users = await User.find({isDeleted:false});
             return users;
         } catch (err) {
             throw new Error("Error fetching users: " + err.message);
@@ -37,7 +37,7 @@ module.exports = {
 
     deleteUser: async (id) => {
         try {
-            return await User.findByIdAndDelete(id);
+            return await User.findByIdAndUpdate(id,{isDeleted: true});
         } catch (err) {
             throw new Error("Error deleting user: " + err.message);
         }
@@ -74,5 +74,31 @@ module.exports = {
             console.error("error happaned while adding product", err);
             throw new Error("error occured while adding new product")
         }
-    }
+    },
+
+
+    bulkUsersDelete: async (data) => {
+        try {
+            // Mark users as deleted (soft delete)
+            const deleteSelectedUsers = await User.updateMany(
+                { _id: { $in: data }, isDeleted: false },  // Ensuring not already deleted
+                { $set: { isDeleted: true } }              // Soft delete
+            );
+    
+            // Check if any users were actually modified
+            if (deleteSelectedUsers.nModified === 0) {
+                throw new Error("No users were updated. Either they do not exist or are already deleted.");
+            }
+    
+            return {
+                success: true,
+                message: `${deleteSelectedUsers.nModified} users marked as deleted.`,  // Informative message
+                data: deleteSelectedUsers
+            };
+        } catch (err) {
+            console.error("Error occurred while deleting users", err);
+            throw new Error("Error occurred while deleting selected users.");
+        }
+    },
+    
 };

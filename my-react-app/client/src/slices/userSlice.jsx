@@ -37,6 +37,16 @@ export const deleteUser = createAsyncThunk("user/deleteUser", async (userId, { r
     }
 });
 
+export const bulkDelete = createAsyncThunk("user/bulkDelete", async (userIds, { rejectWithValue})=>{
+    try{
+        const response = await axios.post('http://localhost:3000/api/admin/bulk-delete', userIds, { withCredentials: true });
+        return response;
+    }
+    catch(err){
+        return rejectWithValue(err.response.data);
+    }
+})
+
 const userSlice = createSlice({
     name: "user",
     initialState: {
@@ -119,6 +129,14 @@ const userSlice = createSlice({
             })
             .addCase(deleteUser.rejected, (state, action) => {
                 state.error = action.payload ? action.payload.message : ["Failed to delete user"];
+            })
+            .addCase(bulkDelete.rejected, (state, action) =>{
+                state.error= action.payload ? action.payload.message : ["Failed to delete users"];
+            })
+            .addCase(bulkDelete.fulfilled, (state, action) =>{
+                state.users = state.users.filter((user) = user._id !== action.payload);
+                state.filteredUsers = state.filteredUsers.filter((user) = user._id !== action.payload);
+                state.error = null;
             })
     },
 });

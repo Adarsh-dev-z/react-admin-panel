@@ -94,6 +94,21 @@ module.exports = {
         }
     },
 
+    bulkDelete: async (req, res) =>{
+        const { userIds } = req.body
+        try{
+            const result = await adminHelper.bulkUsersDelete(userIds);
+            return res.status(200).json({
+                message:`${result.nModified} users marked as deleted.`,
+                data: result
+            })
+        }
+        catch(err){
+            console.log("error deleting the users:", err);
+            res.status(500).json({ message: "server error occured while deleting the users" });
+        }
+    },
+
     addUser: async (req, res) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
