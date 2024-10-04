@@ -95,6 +95,7 @@ module.exports = {
     },
 
     bulkDelete: async (req, res) =>{
+        console.log(req.body)
         const { userIds } = req.body
         try{
             const result = await adminHelper.bulkUsersDelete(userIds);

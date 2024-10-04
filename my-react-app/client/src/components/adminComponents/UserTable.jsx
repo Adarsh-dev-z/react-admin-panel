@@ -97,7 +97,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, updateUser, deleteUser } from "../../slices/userSlice";
+import { fetchUsers, updateUser, deleteUser, bulkDelete } from "../../slices/userSlice";
 import EditUserModal from "./EditUserModal";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -163,6 +163,18 @@ const UserTable = () => {
         }
     }
 
+    const handleBulkDelete = async() =>{
+        try{
+            if(selectedUsersIds.length > 0){
+               await dispatch(bulkDelete(selectedUsersIds));
+               setSelectedUsersIds([]);
+            }
+        }
+        catch(err){
+            console.log("error occured at bulk delete",err)
+        }
+    }
+console.log(selectedUsersIds)
     
 
     return (
@@ -170,6 +182,7 @@ const UserTable = () => {
             <h2 className="text-2xl font-bold mb-4">User Management</h2>
             <button 
                 disabled={selectedUsersIds.length==0}
+                onClick={handleBulkDelete}
                 className={`mb-4 bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ${selectedUsersIds.length === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
                 >
                 Delete selected

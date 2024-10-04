@@ -37,15 +37,15 @@ export const deleteUser = createAsyncThunk("user/deleteUser", async (userId, { r
     }
 });
 
-export const bulkDelete = createAsyncThunk("user/bulkDelete", async (userIds, { rejectWithValue})=>{
-    try{
-        const response = await axios.post('http://localhost:3000/api/admin/bulk-delete', userIds, { withCredentials: true });
-        return response;
-    }
-    catch(err){
+export const bulkDelete = createAsyncThunk("user/bulkDelete", async (userIds, { rejectWithValue }) => {
+    try {
+        const response = await axios.post('http://localhost:3000/api/admin/bulk-delete', { userIds }, { withCredentials: true });
+        return userIds;
+    } catch (err) {
         return rejectWithValue(err.response.data);
     }
-})
+});
+
 
 const userSlice = createSlice({
     name: "user",
@@ -131,11 +131,13 @@ const userSlice = createSlice({
                 state.error = action.payload ? action.payload.message : ["Failed to delete user"];
             })
             .addCase(bulkDelete.rejected, (state, action) =>{
+                // console.log(action)
                 state.error= action.payload ? action.payload.message : ["Failed to delete users"];
             })
             .addCase(bulkDelete.fulfilled, (state, action) =>{
-                state.users = state.users.filter((user) = user._id !== action.payload);
-                state.filteredUsers = state.filteredUsers.filter((user) = user._id !== action.payload);
+                console.log(action)
+                state.users = state.users.filter((user) => !action.payload.includes(user._id));
+                state.filteredUsers = state.filteredUsers.filter((user) => !action.payload.includes(user._id));
                 state.error = null;
             })
     },
