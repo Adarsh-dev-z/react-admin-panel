@@ -79,20 +79,18 @@ module.exports = {
 
     bulkUsersDelete: async (data) => {
         try {
-            // Mark users as deleted (soft delete)
             const deleteSelectedUsers = await User.updateMany(
-                { _id: { $in: data }, isDeleted: false },  // Ensuring not already deleted
-                { $set: { isDeleted: true } }              // Soft delete
+                { _id: { $in: data }, isDeleted: false },  
+                { $set: { isDeleted: true } }             
             );
     
-            // Check if any users were actually modified
             if (deleteSelectedUsers.nModified === 0) {
                 throw new Error("No users were updated. Either they do not exist or are already deleted.");
             }
     
             return {
                 success: true,
-                message: `${deleteSelectedUsers.nModified} users marked as deleted.`,  // Informative message
+                message: `${deleteSelectedUsers.nModified} users marked as deleted.`,  
                 data: deleteSelectedUsers
             };
         } catch (err) {
@@ -100,5 +98,10 @@ module.exports = {
             throw new Error("Error occurred while deleting selected users.");
         }
     },
+
+    getUsersWithPagination: async (skip, limit) => {
+        return await User.find({isDeleted:false}).skip(skip).limit(limit); 
+    }
+    
     
 };

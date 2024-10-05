@@ -60,7 +60,8 @@ module.exports = {
         try {
             const { email, password } = req.body;
             const user = await userHelper.findUserByEmail(email);
-            if (!user) {
+            console.log("login user", user);
+            if (!user || user.isDeleted==true) {
                 return res.status(400).json({ message: "User does not exist" });
             }
 

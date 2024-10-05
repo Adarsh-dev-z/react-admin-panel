@@ -7,7 +7,8 @@ const userSchema = new Schema(
         phone: { type: Number, required: true },
         password: { type: String, required: true },
         role: { type: String, required: true, default: "user" },
-        isDeleted: { type: Boolean, required: true, default: false}
+        isDeleted: { type: Boolean, required: true, default: false},
+        maxScore: { type: Number, default: 0 }
     },
     { timestamps: true, minimize: false }
 );

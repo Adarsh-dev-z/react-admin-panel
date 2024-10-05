@@ -44,7 +44,7 @@ const AdminHeader = () => {
         <>
             <header className="fixed top-0 left-0 w-full bg-gray-100 shadow-md z-50 flex justify-between items-center p-4">
                 <div className="text-left">
-                    <h2 className="text-xl font-extrabold text-gray-800">UM</h2>
+                    <h2 className="text-xl font-extrabold text-gray-800">      </h2>
                 </div>
                 <div className="flex items-center space-x-4">
                     <form onSubmit={handleSearchSubmit} className="relative flex items-center">
@@ -58,10 +58,10 @@ const AdminHeader = () => {
                         </button>
                     </div>
                     <div className="hidden lg:flex space-x-2">
-                        <button onClick={addUserHandler} className="bg-white text-gray-800 px-4 py-2 rounded-md hover:bg-gray-200 transition">
+                        <button onClick={addUserHandler} className="bg-white text-gray-800 px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-200 transition">
                             Add User
                         </button>
-                        <button onClick={LogoutHandler} className="bg-white text-gray-800 px-4 py-2 rounded-md hover:bg-gray-200 transition">
+                        <button onClick={LogoutHandler} className="bg-white text-gray-800 px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-200 transition">
                             Logout
                         </button>
                     </div>
