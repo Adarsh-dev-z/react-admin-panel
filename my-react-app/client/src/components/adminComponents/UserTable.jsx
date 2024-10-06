@@ -129,7 +129,6 @@ const [currentPage, setCurrentPage] = useState(1);
         setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
     };
 
-  // ---------------------------------------------------
 
     const handleEdit = (user) => {
         setSelectedUser(user);

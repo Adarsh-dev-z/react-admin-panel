@@ -24,7 +24,6 @@ const AddUserModal = ({ onClose }) => {
             <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
                 <h3 className="text-lg font-bold mb-4">Add User</h3>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    {/* Username Field */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
                             Username
@@ -41,7 +40,6 @@ const AddUserModal = ({ onClose }) => {
                         {errors.username && <p className="text-red-500">{errors.username.message}</p>}
                     </div>
     
-                    {/* Email Field */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                             Email
@@ -60,15 +58,14 @@ const AddUserModal = ({ onClose }) => {
                         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                     </div>
     
-                   {/* Phone Field */}
 <div className="mb-4">
     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
         Phone
     </label>
     <input
-        type="text" // Keeping the type as 'text'
-        id="phone" // Set the id for the label association
-        name="phone" // Name for the input field
+        type="text" 
+        id="phone" 
+        name="phone" 
         {...register("phone", {
             required: "Phone number is required",
             validate: (value) =>
@@ -76,13 +73,12 @@ const AddUserModal = ({ onClose }) => {
                 (/^\d{10}$/.test(value) || "Phone number must be 10 digits"),
         })}
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        maxLength={10} // Limit input to 10 characters
+        maxLength={10} 
     />
-    {errors.phone && <p className="text-red-500">{errors.phone.message}</p>} {/* Error message for phone */}
+    {errors.phone && <p className="text-red-500">{errors.phone.message}</p>} 
 </div>
 
     
-                    {/* Password Field */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                             Password
@@ -101,7 +97,6 @@ const AddUserModal = ({ onClose }) => {
                         {errors.password && <p className="text-red-500">{errors.password.message}</p>}
                     </div>
     
-                    {/* Confirm Password Field */}
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="confirmPassword">
                             Confirm Password

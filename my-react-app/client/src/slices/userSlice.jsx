@@ -1,23 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// export const fetchUsers = createAsyncThunk("user/fetchUsers", async (_, { rejectWithValue }) => {
-//     try {
-//         const response = await axios.get("http://localhost:3000/api/admin/users", { withCredentials: true });
-//         return response.data.users;
-//     } catch (err) {
-//         return rejectWithValue(err.response.data);
-//     }
-// });
 
 export const fetchUsers = createAsyncThunk("user/fetchUsers", async ({ page, limit }, { rejectWithValue }) => {
     try {
         const response = await axios.get(`http://localhost:3000/api/admin/users?page=${page}&limit=${limit}`, { withCredentials: true });
         return {
             usersData: response.data.users,
-            total: response.data.total,
-            currentPage: response.data.currentPage,
-            totalPages: response.data.totalPages
+
         };
     } catch (err) {
         return rejectWithValue(err.response.data);

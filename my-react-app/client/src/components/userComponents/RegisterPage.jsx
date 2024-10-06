@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { User, Mail, Lock, Key, Phone } from "lucide-react"; // Added Phone icon
+import { User, Mail, Lock, Key, Phone } from "lucide-react"; 
 import { useNavigate } from "react-router-dom";
 import usePreventBackNavigation from "../../customHooks/usePreventBackNavigation";
 import usePreventCache from "../../customHooks/usePreventCache";
@@ -60,7 +60,7 @@ const RegisterPage = () => {
                                 })}
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pl-10"
                             />
-                            {/* Error message for username */}
+                            
                             {errors.username && <p className="mt-2 text-sm text-red-600">{errors.username.message}</p>}
                         </div>
                         <div className="relative">
@@ -77,26 +77,25 @@ const RegisterPage = () => {
                                 })}
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pl-10"
                             />
-                            {/* Error message for email */}
+                           
                             {errors.email && <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>}
                         </div>
                         <div className="relative">
     <Phone className="absolute top-3 left-3 text-gray-400" size={18} />
     <input
-        type="tel" // Keep type as 'tel'
+        type="tel" 
         placeholder="Phone"
         {...formRegister("phone", { 
             required: "Phone number is required", 
             pattern: {
-                value: /^[0-9]{10}$/, // Allow only 10-digit numbers
+                value: /^[0-9]{10}$/, 
                 message: "Phone number must be 10 digits long and contain only numbers"
             }
         })}
         className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pl-10"
-        // Adding a maxLength to limit user input
-        maxLength={10} // Limit to 10 digits
+       
+        maxLength={10} 
     />
-    {/* Error message for phone */}
     {errors.phone && <p className="mt-2 text-sm text-red-600">{errors.phone.message}</p>}
 </div>
 
@@ -115,7 +114,6 @@ const RegisterPage = () => {
                                 })}
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pl-10"
                             />
-                            {/* Error message for password */}
                             {errors.password && <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>}
                         </div>
                         <div className="relative">
@@ -128,12 +126,10 @@ const RegisterPage = () => {
                                 })}
                                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm pl-10"
                             />
-                            {/* Error message for confirm password */}
                             {errors.confirmPassword && <p className="mt-2 text-sm text-red-600">{errors.confirmPassword.message}</p>}
                         </div>
                     </div>
 
-                    {/* Global error message */}
                     {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
 
                     <div>
@@ -150,7 +146,7 @@ const RegisterPage = () => {
                     <p className="mt-2 text-sm text-gray-600">
                         Already have an account?{" "}
                         <button
-                            onClick={() => navigate("/login")} // Navigate to login page
+                            onClick={() => navigate("/login")} 
                             className="text-indigo-600 hover:text-indigo-500"
                         >
                             Login here

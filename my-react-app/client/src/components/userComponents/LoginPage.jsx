@@ -83,7 +83,7 @@ const LoginPage = () => {
                     <p className="mt-2 text-sm text-gray-600">
                         Don't have an account?{" "}
                         <button
-                            onClick={() => navigate("/register")} // Navigate to register page
+                            onClick={() => navigate("/register")} 
                             className="text-indigo-600 hover:text-indigo-500"
                         >
                             Register here

@@ -66,7 +66,6 @@ const authSlice = createSlice({
         builder
             .addCase(login.fulfilled, (state, action) => {
                 state.isAuthenticated = true;
-                console.log(action.payload);
                 state.userRole = action.payload.role;
                 state.error = null;
             })
@@ -76,13 +75,11 @@ const authSlice = createSlice({
                 state.error = action.payload.message || 'Something went wrong';
             })
             .addCase(logout.fulfilled, (state) => {
-                console.log(state);
                 state.isAuthenticated = false;
                 state.userRole = null;
                 state.error = null;
             })
             .addCase(register.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.isAuthenticated = true;
                 state.userRole = action.payload.role;
                 state.error = null;
@@ -93,7 +90,6 @@ const authSlice = createSlice({
                 state.error = action.payload.message;
             })
             .addCase(adminLogin.fulfilled, (state, action) => {
-                console.log(action.payload);
                 state.isAuthenticated = true;
                 state.userRole = action.payload.role;
                 state.error = null;

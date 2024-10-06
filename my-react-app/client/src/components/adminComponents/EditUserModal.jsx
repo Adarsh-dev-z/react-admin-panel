@@ -65,8 +65,8 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
         Phone
     </label>
     <input
-        type="text" // Keep as 'text' to control input format
-        id="phone" // Set the id for the label association
+        type="text" 
+        id="phone" 
         {...register("phone", { 
             required: "Phone is required", 
             validate: {
@@ -75,9 +75,9 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
             } 
         })}
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        maxLength={10} // Limit to 10 digits
+        maxLength={10}
     />
-    {errors.phone && <p className="text-red-500">{errors.phone.message}</p>} {/* Error message for phone */}
+    {errors.phone && <p className="text-red-500">{errors.phone.message}</p>} 
 </div>
 
     
