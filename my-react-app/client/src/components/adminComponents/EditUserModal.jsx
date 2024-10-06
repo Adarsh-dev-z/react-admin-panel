@@ -10,7 +10,7 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
         handleSubmit,
         formState: { errors },
     } = useForm({
-        defaultValues: user
+        defaultValues: user,
     });
 
     const onSubmit = async (data) => {
@@ -33,54 +33,53 @@ const EditUserModal = ({ user, onClose, onUpdate }) => {
                         </label>
                         <input
                             type="text"
-                            {...register("username", { 
-                                required: "Username is required", 
-                                validate: value => (value && value.trim() !== "") || `Username cannot be empty` 
+                            {...register("username", {
+                                required: "Username is required",
+                                validate: (value) => (value && value.trim() !== "") || `Username cannot be empty`,
                             })}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
                         {errors.username && <p className="text-red-500">{errors.username.message}</p>}
                     </div>
-    
+
                     <div className="mb-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                             Email
                         </label>
                         <input
                             type="email"
-                            {...register("email", { 
-                                required: "Email is required", 
+                            {...register("email", {
+                                required: "Email is required",
                                 validate: {
-                                    notEmpty: value => (value && value.trim() !== "") || `Email cannot be empty`,
-                                    isValidEmail: value => /^[^\s@]+@gmail\.com$/.test(value) || `Email must be a valid @gmail.com address`
-                                } 
+                                    notEmpty: (value) => (value && value.trim() !== "") || `Email cannot be empty`,
+                                    isValidEmail: (value) => /^[^\s@]+@gmail\.com$/.test(value) || `Email must be a valid @gmail.com address`,
+                                },
                             })}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
                         {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                     </div>
-    
-                    <div className="mb-4">
-    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
-        Phone
-    </label>
-    <input
-        type="text" 
-        id="phone" 
-        {...register("phone", { 
-            required: "Phone is required", 
-            validate: {
-                notEmpty: value => (value && value.trim() !== "") || "Phone cannot be empty",
-                isValidPhone: value => /^\d{10}$/.test(value) || "Phone must be 10 digits"
-            } 
-        })}
-        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        maxLength={10}
-    />
-    {errors.phone && <p className="text-red-500">{errors.phone.message}</p>} 
-</div>
 
-    
+                    <div className="mb-4">
+                        <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
+                            Phone
+                        </label>
+                        <input
+                            type="text"
+                            id="phone"
+                            {...register("phone", {
+                                required: "Phone is required",
+                                validate: {
+                                    notEmpty: (value) => (value && value.trim() !== "") || "Phone cannot be empty",
+                                    isValidPhone: (value) => /^\d{10}$/.test(value) || "Phone must be 10 digits",
+                                },
+                            })}
+                            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            maxLength={10}
+                        />
+                        {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
+                    </div>
+
                     <div className="flex items-center justify-between">
                         <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                             Update
