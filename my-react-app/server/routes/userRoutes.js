@@ -7,7 +7,7 @@ const router = require("express").Router();
 router.get("/", checkAuthStatus, (req, res)=>{
     res.send('protected route accessed')
 });
-router.post('/register',  userController.userRegister)
+router.post('/register', validateUserRegistration,  userController.userRegister)
 router.post('/login', userController.userLogin)
 router.get('/logout', userController.userLogout)
 router.get('/auth-status', checkAuthStatus)

@@ -79,6 +79,17 @@ const LoginPage = () => {
                         </button>
                     </div>
                 </form>
+                <div className="text-center">
+                    <p className="mt-2 text-sm text-gray-600">
+                        Don't have an account?{" "}
+                        <button
+                            onClick={() => navigate("/register")} // Navigate to register page
+                            className="text-indigo-600 hover:text-indigo-500"
+                        >
+                            Register here
+                        </button>
+                    </p>
+                </div>
             </div>
         </div>
     );
