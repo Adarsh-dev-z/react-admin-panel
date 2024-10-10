@@ -53,23 +53,14 @@ module.exports = {
         }
     },
 
-    // getUsers: async (req, res) => {
-    //     try {
-    //         const users = await adminHelper.getAllUsers();
-    //         res.status(200).json({ users });
 
-    //     } catch (error) {
-    //         console.error("Get users error:", error);
-    //         res.status(500).json({ message: "Server error during get users" });
-    //     }
-    // },
 
     getUsers: async (req, res) => {
         try {
-            const { page = 1, limit = 10 } = req.query; // Default to page 1 and 10 users per page
+            const { page = 1, limit = 10 } = req.query; 
             const skip = (page - 1) * limit;
     
-            const totalUsers = await adminHelper.getAllUsers(); // Get total users count
+            const totalUsers = await adminHelper.getAllUsers(); 
             const users = await adminHelper.getUsersWithPagination(skip, parseInt(limit));
     
             res.status(200).json({ 

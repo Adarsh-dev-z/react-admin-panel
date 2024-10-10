@@ -4,9 +4,9 @@ const {validateUserRegistration} = require("../middleware/validateUser");
 const { checkAuthStatus } = require("../middleware/authMiddleware");
 const router = require("express").Router();
 
-router.get("/", checkAuthStatus, (req, res)=>{
-    res.send('protected route accessed')
-});
+// router.get("/", checkAuthStatus, (req, res)=>{
+//     res.send('protected route accessed')
+// });
 router.post('/register', validateUserRegistration,  userController.userRegister)
 router.post('/login', userController.userLogin)
 router.get('/logout', userController.userLogout)

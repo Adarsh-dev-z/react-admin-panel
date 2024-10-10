@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "allowJs": true,                     // Allow JavaScript files to be compiled
+    "checkJs": true,                     // Check JavaScript files for type errors
+    "outDir": "./dist",                  // Specify output directory
+    "rootDir": "./src",                  // Specify root directory for input files
+    "target": "es6",                     // Specify ECMAScript target version
+    "module": "commonjs",                // Specify module code generation
+    "strict": true                       // Enable all strict type-checking options
+  },
+  "include": ["src/**/*"],                // Include all files in the src directory
+  "exclude": ["node_modules"]             // Exclude node_modules
+}
