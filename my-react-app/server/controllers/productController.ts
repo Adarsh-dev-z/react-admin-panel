@@ -51,6 +51,17 @@ module.exports ={
         }
     },
 
-    
+    deleteProduct: async(req: Request, res: Response): Promise<void> =>{
+        try{
+            const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+            if(!deletedProduct){
+                res.status(404).json({message: 'product not found'})
+            }
+            res.status(200).json({message: 'Product deleted succesfully'})
+        }
+        catch(err){
+            res.status(500).json({message: 'error deleting product'})
+        }
+    }
     
 }
