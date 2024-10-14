@@ -14,7 +14,7 @@ module.exports ={
         }
     },
 
-    getProduct: async(req: Request, res: Response): Promise<void> =>{
+    getProducts: async(req: Request, res: Response): Promise<void> =>{
         try{
             const products = await Product.find();
             res.status(200).json(products);
@@ -61,6 +61,14 @@ module.exports ={
         }
         catch(err){
             res.status(500).json({message: 'error deleting product'})
+        }
+    },
+
+    bulkDeleteProduct: async(req: Request, res: Response): Promise<void> =>{
+        try{
+            const { ids } = req.body;
+            await Product.deleteMany({_id: {$in :ids}});
+
         }
     }
     
