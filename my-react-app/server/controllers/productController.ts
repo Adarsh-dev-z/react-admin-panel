@@ -35,6 +35,22 @@ module.exports ={
             const errorMessage = err instanceof Error ? err.message : 'Unknown error';
             res.status(500).json({ error: `Failed to fetch product: ${errorMessage}` });
         }
-    }
+    },
+
+    updateProduct: async(req: Request, res:Response): Promise<void> =>{
+        try{
+            const updatedProduct = await Product.findByIdAndUpdate(req.params.id, req.body, {new: true});
+            if(!updatedProduct){
+               res.status(404).json({message: 'product not found'});
+               return;
+            }
+            res.status(200).json(updatedProduct)
+        }
+        catch(err){
+            res.status(500).json({message: 'failed to update product', err})
+        }
+    },
+
+    
     
 }
