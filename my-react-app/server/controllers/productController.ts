@@ -68,7 +68,10 @@ module.exports ={
         try{
             const { ids } = req.body;
             await Product.deleteMany({_id: {$in :ids}});
-
+            res.status(200).json({message: 'products deleted successfully'})
+        }
+        catch(err){
+            res.status(500).json({error: 'failed to delete products'})
         }
     }
     

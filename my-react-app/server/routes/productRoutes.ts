@@ -8,3 +8,4 @@ router.post('/add-product', productController.addProduct);
 router.post('/update-product', productController.updateProduct);
 router.get('/product', productController.getProductById);
 router.delete('/delete-product', productController.deleteProduct);
+router.delete('/bulkDelete-product', productController.bulkDeleteProduct)
