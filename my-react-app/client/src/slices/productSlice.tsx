@@ -50,5 +50,27 @@ export const fetchProducts = createAsyncThunk<Product[]>(
 )
 
 export const fetchProductById = createAsyncThunk<Product, string>(
-    "products/fetchProductsById"
+    "products/fetchProductsById",
+    async(id, {rejectWithValue}) =>{
+        try{
+            const response = await axios.get("http://localhost:3000/api/admin/productById", { withCredentials: true });
+            return response.data
+        }
+        catch(err: any){
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+
+export const updateProduct = createAsyncThunk<Product, {id: string; productData: Omit<Product, "_id">}>(
+    "products/updateProduct",
+    async({id, productData}, {rejectWithValue}) =>{
+        try{
+            const response = await axios.put("http://localhost:3000/api/admin/productById", { withCredentials: true });
+            return response.data
+        }
+        catch(err:any){
+            return rejectWithValue(err.response.data)
+        }
+    }
 )
