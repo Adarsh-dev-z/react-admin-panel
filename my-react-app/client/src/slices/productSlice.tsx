@@ -113,5 +113,9 @@ const productSlice = createSlice({
                     state.loading=false;
                     state.error= action.payload;
                 })
+                .addCase(fetchProducts.pending, (state)=>{
+                    state.loading=true;
+                    state.error=null
+                })
     }
 })
