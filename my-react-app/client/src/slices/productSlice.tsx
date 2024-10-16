@@ -117,5 +117,6 @@ const productSlice = createSlice({
                     state.loading=true;
                     state.error=null
                 })
+                .addCase
     }
 })
