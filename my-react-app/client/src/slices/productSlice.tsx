@@ -95,7 +95,7 @@ const productSlice = createSlice({
         resetProductState: (state) =>{
             state.product = null;
             state.error = null;
-            state.loading = null;
+            state.loading = false;
         },
     },
     extraReducers: (builder) =>{
@@ -117,6 +117,15 @@ const productSlice = createSlice({
                     state.loading=true;
                     state.error=null
                 })
-                .addCase
+                .addCase(fetchProducts.fulfilled, (state, action: PayloadAction<Product[]>) => {
+                    state.loading = false;
+                    state.products = action.payload;
+                  })
+                  .addCase(fetchProducts.rejected, (state, action: PayloadAction<any>) => {
+                    state.loading = false;
+                    state.error = action.payload;
+                  })
+                  
+                
     }
 })
