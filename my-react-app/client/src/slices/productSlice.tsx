@@ -113,6 +113,7 @@ const productSlice = createSlice({
                     state.loading=false;
                     state.error= action.payload;
                 })
+
                 .addCase(fetchProducts.pending, (state)=>{
                     state.loading=true;
                     state.error=null
@@ -125,7 +126,19 @@ const productSlice = createSlice({
                     state.loading = false;
                     state.error = action.payload;
                   })
-                  
+
+                  .addCase(fetchProductById.pending, (state) => {
+                    state.loading = true;
+                    state.error = null;
+                  })
+                  .addCase(fetchProductById.fulfilled, (state, action: PayloadAction<Product>) => {
+                    state.loading = false;
+                    state.product = action.payload;
+                  })
+                  .addCase(fetchProductById.rejected, (state, action: PayloadAction<any>) => {
+                    state.loading = false;
+                    state.error = action.payload;
+                  })
                 
     }
 })
