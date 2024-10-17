@@ -155,6 +155,23 @@ const productSlice = createSlice({
                     state.loading = false;
                     state.error = action.payload;
                   })
+
+                  .addCase(deleteProduct.pending, (state) => {
+                    state.loading = true;
+                    state.error = null;
+                  })
+                  .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<string>) => {
+                    state.loading = false;
+                    state.products = state.products.filter((product) => product._id !== action.payload);
+                  })
+                  .addCase(deleteProduct.rejected, (state, action: PayloadAction<any>) => {
+                    state.loading = false;
+                    state.error = action.payload;
+                  })
                 
     }
 })
+
+
+export const { resetProductState } = productSlice.actions;
+export default productSlice.reducer;
