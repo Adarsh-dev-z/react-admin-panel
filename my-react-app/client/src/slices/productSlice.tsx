@@ -139,6 +139,22 @@ const productSlice = createSlice({
                     state.loading = false;
                     state.error = action.payload;
                   })
+                  
+                  .addCase(updateProduct.pending, (state) => {
+                    state.loading = true;
+                    state.error = null;
+                  })
+                  .addCase(updateProduct.fulfilled, (state, action: PayloadAction<Product>) => {
+                    state.loading = false;
+                    const index = state.products.findIndex((product) => product._id === action.payload._id);
+                    if (index !== -1) {
+                      state.products[index] = action.payload;
+                    }
+                  })
+                  .addCase(updateProduct.rejected, (state, action: PayloadAction<any>) => {
+                    state.loading = false;
+                    state.error = action.payload;
+                  })
                 
     }
 })
